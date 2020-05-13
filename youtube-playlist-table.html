@@ -50,14 +50,14 @@
 	Now to fetch the list of video id's use the command:
 	<p><code>youtube-dl --get-id PLAYLISTLINK -i </code></p>
 	You should pipe the output of this command into a file to use later. Alternatively, one could run this command from inside of a python script and deal with the output directly. Now, load the file into python and read over it in a loop. For each video id, we need to add the rest of the youtube link (http://www.youtube.com/watch?v=) then open this link and extract the title. 
-	<p><code>	import lxml
+	<p><pre>	import lxml
 			from lxml import etree
 			import urllib
 			y = etree.HTML(urllib.open(FULL_LINK).read())
 			title = y.xpath("//span[@id='eow-title']/@title")
 			title = ''.join(title)
 			title = title.encode('ascii', errors='ignore') #remove bad chars
-	</code></p>
+	</pre></p>
 	This code will give the title of a video from its video id. These can be added to a dataframe, after which the function <code>df.to_html(filename)</code> can be used to create a table.
 				
   <footer>Test</footer>
