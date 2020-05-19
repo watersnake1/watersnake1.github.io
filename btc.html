@@ -1,0 +1,42 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta http-equiv="Content-Style-Type" content="text/css" />
+  <meta name="generator" content="pandoc" />
+  <title></title>
+  <style type="text/css">code{white-space: pre;}</style>
+</head>
+<body>
+<h2 id="installing-a-btc-node-on-a-raspberry-pi">Installing a BTC Node on a Raspberry Pi</h2>
+<p>Raspberry Pi is a cheap single board computer that can be an effective solution for creating a cheap to operate bitcoin node. Its low cost, low power draw and extreme functionality makeit an ideal candidate. In order to set up BTC on an RPI, you will need the following:</p>
+<ul>
+<li>A Raspberry Pi 4 (with onboard wifi, otherwise you'll need a dongle)</li>
+<li>Heatsinks, a small fan, or some other means of cooling the device</li>
+<li>A Micro SD Card (16gb is fine)</li>
+<li>An external drive (should have at least 300gb of space)</li>
+</ul>
+<h3 id="pi-physical-setup">Pi Physical Setup</h3>
+<p>Before turning on the device, apply the heat sinks to the appropriate locations, or set up the cooling fans. Since a BTC node will be running at all times, it is important to keep the pi somewhat cool. In my case, bitcoind uses about 1/3 of the systems resources, enough to create some heat. With two heatsinks that were included in my kit the device can stay completely within acceptable temperatures.</p>
+<h3 id="choosing-an-os">Choosing an OS</h3>
+<p>You can use any operating system on your pi. The pi will not come with an os pre-installed (most of the time) so you will need to create an os image on your sd card yourself. I reccomend using Raspbian OS if you are new; it is an Ubuntu-based OS designed for the RPI with an extensive community to find support in. Other good options would be Debian 8, Linux Lite, Lubuntu, Xubuntu, or Arch Linux. For this guide I am assuming the use of a Debian/Ubuntu based OS.</p>
+<h4 id="creating-the-startup-drive">Creating the startup drive</h4>
+<p>The easiest way to create an OS drive on your sd card is to use Balena Etcher. This is a free program that flashes an operating system ISO file onto a drive. Download it from <a href="www.balena.io">balena.io</a>. It is available for windows, mac and linux. Next, navigate to the website of the OS you want to use and download their ISO. Ensure that you are downloading the version of the OS designed for ARM architecture, as this is the chip architecture of the pi. x86-64 or other archs will not work with your pi. Insert the sd card into your computer, run balena, and select the ISO file to install.</p>
+<h4 id="installing-the-os">Installing the OS</h4>
+<p>After etching is complete, insert the microSD into the pi. You will also need to connect a USB keyboard, mouse, and a screen via HDMI. After the initial install these peripherals will not be neccesary if you only want to use the device via SSH. Plug in the microUSB power supply to turn on the pi. Follow the prompts on screen to install the operating system and select a WiFi network. After finishing, you have a fully functional operating system on the pi. If you installed Raspbian, you should do the following after installing: change the root password with <code>sudo passwd</code>. Using the default root password is not a good idea.</p>
+<h4 id="wifi-stuff">WiFi Stuff</h4>
+<p>In order for bitcoind to communicate with the BTC network, you will need to configure your home wifi a little bit. First, you must enable your router to forward the following ports: 8332, 8333. These are the ports that bitcoind will use to communicate with other nodes. This is done by navigating to the IP address of your router in a browser (usually 192.168.0.1) and entering your router password. If you don't know what your router credentials are, try checking for them on the bottom of your router. It is also convenient to set a static local IP for your pi if you intend to interact with it via ssh. With a static IP, your home network will always reserve the same local address for the pi, meaning you always know where it is located on your network.</p>
+<h3 id="external-storage">External Storage</h3>
+<p>The small microSD card is only used for storing the OS, software packages, and a small amount of documents. The blockchain itself will be stored on an external drive. This is ideal both because microSD cards are more expensive per unit of storage than drives and because they tend to wear out fast with frequent read/writes. Additionally, with the blockchain stored externally one can move the chain to a different device and instanly sync with the network. To setup the drive, plug it into a usb port on the pi. Next, find the drive id with the command <code>sudo blkid</code>. Look for the entry that has the same storage size as the drive itself. Next, create a directory that will serve as the mount point of the drive using <code>mkdir DIRECTORY</code>. This dir can be anywhere you want. Now, we need to mount the drive at this point and tell the pi to mount the drive automatically at boot. To do this, run <code>sudo nano /etc/fstab</code> and add the lines:<br />
+<code>/dev/sda1 /directory ext4</code><br />
+<code>uid=pi, gid=pi, umask=0022, sync, auto, nosuid, rw, nouser 0 0</code><br />
+Replace /dev/sda1 with the name of your drive and /directory with the mount point you created. If you created a user other than the default 'pi' (on raspbian) then change that value to the name of the user you're using. Next, turn off the swap file with <code>sudo dphys-swapfile swapoff</code>. Turning off swap will help preserve the life of the SD card in the pi by reducing the number of read/writes.</p>
+<h3 id="update">Update</h3>
+<p>Now, update the device's packages with <code>sudo apt update &amp;&amp; sudo apt upgrade &amp;&amp; reboot</code>. This will take awhile depending on how many upgrades are available. After this, the device will reboot.</p>
+<h3 id="installing-bitcoin">Installing Bitcoin</h3>
+<p>First, install the dependencies for running bitcoind by running: <code>sudo apt install autoconf libevent-dev libtool libssl-dev libboost-all-dev libminivpnpc-dev git</code><br />
+Then, <code>mkdir ~/bin &amp;&amp; cd ~/bin</code>, then <code>wget http://download.oracle.com/berkely-db/db-4.8.3.NC.tar.gz</code>. This will download the version of Berkeley DB that is compatible with bitcoin.<br />
+To install this, run: <code>tar -xzvf [NAME OF DOWNLOADED FILE]</code> then <code>cd build-unix</code> then <code>../dist/configure --enable-cxx</code> then compile: <code>make -j4 &amp;&amp; sudo make install</code>. With Berkeley DB installed, now we can start installing bitcoind itself.<br />
+First, download the latest version from github: <code>cd ~/bin &amp;&amp; git clone -b 0.19 https://github.com/bitcoin/bitcoin.git</code> then get the package ready: <code>cd /bitcoin &amp;&amp; ./autogen.sh</code>. Now we will do a headless configuration of bitcoind (no gui): <code>./configure CPPFLAGS=&quot;-I/usr/local/BerkeleyDB.4.8/include-O2&quot; LDFLAGS=&quot;-L/usr/local/BerkeleyDB.4.8/lib --enable-upnp-default</code> Now all that is left is to compile bitcoind: <code>sudo make -jz &amp;&amp; sudo make install</code> Compiling will take several minutes to complete. After it is complete, bitcoind is installed on your pi and can be run with <code>bitcoind</code>. For a full list of JSON-RPC API Commands run <code>bitcoin-cli help</code>. All RPC calls are prefixed with <code>bitcoin-cli</code>.</p>
+</body>
+</html>
