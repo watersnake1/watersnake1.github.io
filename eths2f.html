@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>THE MACROPOD</title>
+  <style>
+	body {
+	  margin: 0;
+	  font-family: Arial, Helvetica, sans-serif;
+	}
+
+	article {
+		padding: 40px;
+		width: 70%;
+	}
+
+	code, pre{
+		padding: 1px;
+		background: #DCDCDC;
+
+	}
+	
+	table {
+		border: 1px solid black;
+		margin-left: auto;
+		margin-right: auto;
+	}
+
+	.topnav {
+	  overflow: hidden;
+	  background-color: #333;
+	}
+
+	.topnav a {
+	  float: left;
+	  color: #f2f2f2;
+	  text-align: center;
+	  padding: 14px 16px;
+	  text-decoration: none;
+	  font-size: 17px;
+	}
+
+	.topnav a:hover {
+	  background-color: #ddd;
+	  color: black;
+	}
+
+	.topnav a.active {
+	  background-color: #4CAF50;
+	  color: white;
+	}
+	</style>
+</head>
+<body>
+	<div class="topnav">
+		<a href="index.html">Home</a>
+		<a href="music.html">Music</a>
+		<a href="books.html">Books</a>
+		<a class="active" href="guides.html">Writing and Guides</a>
+		<a href="links.html">Links</a>
+	</div>
+	<article>
+		<h1>Stock to Flow Model Applied to Ethereum</h1>
+		<h2>Introduction</h2>
+		The Stock to Flow model is one of the most contentious Bitcoin investment theses. Developed for Bitcoin by @100TrillionUSD, it predicts the value of BTC based solely on its scarcity. Because the total supply and future issuance of BTC are well known, the scarcity of Bitcoin both in the past, present and future can be easily calculated. Bitcoin's total supply approaches a ceiling of 21 million coins, while the issuance of new coins is halved every 210,000 blocks. As block rewards decrease, the amount of new coins being produced relatie to overall supply diminishes, leading to an increase in apparent scarcity. According to proponents of the S2F model, rising scarcity will drive increased demand, making the market price of BTC go up. Here I want to analyze Ethereum, which has a very different supply schedule to Bitcoin, under the same S2F model. How does Ethereum compare to BTC in this light?
+
+		<h2>Initial Look</h2>
+		Ethereum, of course, is a different beast. Firstly, it does not have a total supply cap. Therefore ETH issuance will occur forever, unless some changes are made to the protcol itself (Vitalik Buterin proposed a supply cap in 2018, although this has not been implemented). So, while the BTC S2F ratio will trend towards infinity as flow approaches 0, ETH S2F will always be essentially finite. Also, ETH does not have an easily predictable inflation rate like BTC. The issuance of ETH rewards is tied to the amount of Uncle Blocks being included over time. According to Attestant.io, uncles account for roughly 5% of Ethereum issuance. Additionally, there is a significant difference between ETH issuance on ETH1 (PoW Chain, 2 ETH block reward) and  ETH2 (PoS) chain, which is expected to be function in the next year. Currently, ETH inflation stands at roughly 4.5%, but after the activation of PoS and the end of traditional ETHhash mining, inflation is set to drop to just .5% annually, which could severely increase the SF ratio over time. Complicating future issuance even further, EIP-1559 suggests burning up to 80% of transaction fees that would normally be included as a miner's reward. The proposal, brought forth by Vitalik Butern et al., aims to lower the cost of fees on the ETH chain and allow wallets to better automate fee calculation for users. Proposed in September 2019, it has not been integrated into ETH's source code yet. Taking all of this into account, I calculated the S2F ratio for ETH 1 between 2016 and 2020 (to May), and try to make a prediction of what the SF ratio will look like in the future based off available information about what ETH issuance will look like in the future.
+		
+		<h2>Historical S2F Rate</h2>
+		First, I wanted to examine the historical data of Ethereum. Although Ethereum is set to undergo major changes to its supply schedule in the coming months, it is still informative to see how ETH has behaved in regards to the S2F model up to this point. I collected data from etherscan.io on total supply and daily issuance of tokens going back to 2016. The SF ratio is defined as <code>SF = stock / flow </code> , where stock=total supply and flow=change in supply. I calculated this for each year between 2016 and 2020, and found the following results:
+		<br>
+		<table>
+			<tr>
+				<th>Year</th>
+				<th>SF</th>
+			</tr>
+			<tr><td>2016</td><td>7.725</td></tr>
+			<tr><td>2017</td><td>10.475</td></tr>
+			<tr><td>2018</td><td>14.010</td></tr>
+			<tr><td>2019</td><td>21.950</td></tr>
+		</table><br>
+		Interestingly, we can see that ETH's SF ratio has sharply increased into 2019, as issuance was cut by 33% at the end of 2018. At the same time the amount of ETH received by miners from uncle blocks also fell by more than half. Due to these factors ETH now has an SF ratio comparable to that of Bitcoin, although lower by about 4; placing in the monetary goods category along with BTC (as defined by @100trillionUSD). In the future, however, this will certainly change; ethereum issuance will decrease dramatically with ETH2.0 with inflation predicted to fall to just .5% - so although the uncapped supply of ETH means that in the long run, it can never be as scarce as Bitcoin, in the short term it could appear more scarce than BTC itself. This is because here we're looking at relative quantities, and not absolute ones. Ethereum will appear more scarce than Bitcoin (although these changes are human-directed) because Ethereum monetary policy is maleable. One of the pitfalls when working with a model such as S2F is that no external factors are accounted for. Ethereum can use its more flexible monetary policy to deflate itself in the short term, while Bitcoin chugs along its predictable emission curve towards 21 million coins. Although ETH looks attractive on paper, in terms of long term-goals, Bitcoin's predictable and unchangeable money issuance brings greater value and security to the table than ETH could ever hope to.
+		<h2>Data Methodology</h2>
+		The data I used are sourced from etherscan.io. I needed two datasets to perform this analysis: the growth of ethereum's total supply, and daily block reward. I downloaded the data as .csv files from etherscan, and merged the two columns into one spreadsheet. Using python, I binned the data into yearly entries and calculated: <code>SF = (total supply for year x) / (sum of all block rewards in year x)</code> . The etherscan data includes all types of block rewards, including those from uncle blocks. The result of this code are the SF values for each year. You can find the code I used on my Github page. 
+		<h2>Predicting Future ETH Issuance</h2>
+		<h2>S2F of ETH in the Future</h2>
+		<h2>Sources</h2>
+		<a href="https://github.com/ethereum/EIPs/issues/960">EIP960</a><br>
+		<a href="https://www.attestant.io/posts/charting-ethereum-issuance/">Charting Ethereum Issuance</a><br>
+		<a href="https://eips.ethereum.org/EIPS/eip-1559">EIP1559</a><br>
+		<a href="https://medium.com/@100trillionUSD/modeling-bitcoins-value-with-scarcity-91fa0fc03e25">Modeling Bitcoin Value with Scarcity</a><br>
+	</article>				
+</body>
+</html>

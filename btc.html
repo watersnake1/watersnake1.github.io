@@ -9,7 +9,17 @@
 	  margin: 0;
 	  font-family: Arial, Helvetica, sans-serif;
 	}
+	
+	article {
+		padding: 40px;
+		width: 70%;
+	}
 
+	code {
+		padding: 1px;
+		background: #DCDCDC;
+
+	}
 	.topnav {
 	  overflow: hidden;
 	  background-color: #333;
@@ -47,6 +57,7 @@
 		<a class="active" href="guides.html">Guides</a>
 		<a href="links.html">Links</a>
 	</div>
+<article>
 <h2 id="installing-a-btc-node-on-a-raspberry-pi">Installing a BTC Node on a Raspberry Pi</h2>
 <p>Raspberry Pi is a cheap single board computer that can be an effective solution for creating a cheap to operate bitcoin node. Its low cost, low power draw and extreme functionality makeit an ideal candidate. In order to set up BTC on an RPI, you will need the following:</p>
 <ul>
@@ -77,5 +88,6 @@ Replace /dev/sda1 with the name of your drive and /directory with the mount poin
 Then, <code>mkdir ~/bin &amp;&amp; cd ~/bin</code>, then <code>wget http://download.oracle.com/berkely-db/db-4.8.3.NC.tar.gz</code>. This will download the version of Berkeley DB that is compatible with bitcoin.<br />
 To install this, run: <code>tar -xzvf [NAME OF DOWNLOADED FILE]</code> then <code>cd build-unix</code> then <code>../dist/configure --enable-cxx</code> then compile: <code>make -j4 &amp;&amp; sudo make install</code>. With Berkeley DB installed, now we can start installing bitcoind itself.<br />
 First, download the latest version from github: <code>cd ~/bin &amp;&amp; git clone -b 0.19 https://github.com/bitcoin/bitcoin.git</code> then get the package ready: <code>cd /bitcoin &amp;&amp; ./autogen.sh</code>. Now we will do a headless configuration of bitcoind (no gui): <code>./configure CPPFLAGS=&quot;-I/usr/local/BerkeleyDB.4.8/include-O2&quot; LDFLAGS=&quot;-L/usr/local/BerkeleyDB.4.8/lib --enable-upnp-default</code> Now all that is left is to compile bitcoind: <code>sudo make -jz &amp;&amp; sudo make install</code> Compiling will take several minutes to complete. After it is complete, bitcoind is installed on your pi and can be run with <code>bitcoind</code>. For a full list of JSON-RPC API Commands run <code>bitcoin-cli help</code>. All RPC calls are prefixed with <code>bitcoin-cli</code>.</p>
+</article>
 </body>
 </html>

@@ -9,6 +9,17 @@
 	  font-family: Arial, Helvetica, sans-serif;
 	}
 
+	article {
+		padding: 40px;
+		width: 70%;
+	}
+
+	code, pre{
+		padding: 1px;
+		background: #DCDCDC;
+
+	}
+
 	.topnav {
 	  overflow: hidden;
 	  background-color: #333;
@@ -39,8 +50,10 @@
 		<a href="index.html">Home</a>
 		<a href="music.html">Music</a>
 		<a href="books.html">Books</a>
-		<a class="active" href="guides.html">Guides</a>
+		<a class="active" href="guides.html">Writing and Guides</a>
+		<a href="links.html">Links</a>
 	</div>
+	<article>
 	<h1>How to Create an HTML Table from youtube playlist</h1>
 	<p>The goal is to create an html table from the content of a youtube playlist. This method can be used to make a directory of videos that is easy to manage (outside of the youtube website itself), or to create documents that contain all the links to youtube videos. This can be done easily in python. </p>
 	
@@ -59,7 +72,6 @@
 			title = title.encode('ascii', errors='ignore') #remove bad chars
 	</pre></p>
 	This code will give the title of a video from its video id. These can be added to a dataframe, after which the function <code>df.to_html(filename)</code> can be used to create a table.
-				
-  <footer>Test</footer>
+	</article>				
 </body>
 </html>
