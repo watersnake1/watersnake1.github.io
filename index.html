@@ -4,18 +4,62 @@
   <meta charset="UTF-8">
   <title>THE MACROPOD</title>
   <style>
-	body {
-	  margin: 0;
-	  font-family: Arial, Helvetica, sans-serif;
+	body,html {
+	  background: #007bff;
+	  height:100%;
 	}
+	h1 {
+	  height:auto;
+	  display:table;
+	  width: 80%;
+	  text-align:center;
+	  overflow: auto;
+	  margin: auto;
+	  position: static;
+	  top: 0;left: 0;bottom: 0;right: 0;
+	  color: white;
+	  font-family: 'Raleway', sans-serif;
+	  font-weight:300;
+	  font-size:3em;
+	}
+
+	h2 {
+	    position: fixed;
+	    text-align:center;
+	    top:10px;
+	    right:20px;
+	    color:white;
+	    font-size: 20px;
+	    font-family: Roboto;
+	    font-weight: normal;
+			z-index:999;
+	    span{
+	      font-size:15px;
+	      font-weight: lighter;
+	    }
+	    a{
+	      color:white;
+	      font-size:15px;
+	      padding: 0 30px
+
+	    }
+	  }
 
 	img {
 		max-width: 100%;
 		height: auto;
 	}
+
+	canvas {
+		display: block;
+		width: 100vw;
+		height: 100vh;
+	}
+
 	.topnav {
 	  overflow: hidden;
 	  background-color: #333;
+  	  position: fixed;
 	}
 
 	.topnav a {
@@ -36,9 +80,17 @@
 	  background-color: #4CAF50;
 	  color: white;
 	}
+
+	.splash {
+		position: fixed;
+		top: 10%;
+		left: 5%;
+	}
 	</style>
 </head>
 <body>
+	<script src="jquery.js"></script>
+	<script src="animation.js"></script>
 	<div class="topnav">
 		<a class="active" href="index.html">Home</a>
 		<a href="music.html">Music</a>
@@ -46,17 +98,8 @@
 		<a href="guides.html">Writing and Guides</a>
 		<a href="links.html">Links</a>
 	</div>
-
-  <h1>The Macropod</h1>
-  <p>This is a collection of things that I have created, written or find interesting.</p>
-  	<script>
-		var xhttp = new XMLHttpRequest();
-		xhttp.open("GET", "http://24.61.155.218:4444/api/getmininginfo", true);
-		xhttp.send();
-	</script>
-  </p>
-  <img src="images/im1.jpeg">
-  <img src="images/img2.jpg">
-  <img src="images/im3.jpeg">
+	<div class="splash">
+	<h1>Macropod.xyz</h1>	
+	</div>
 </body>
 </html>
