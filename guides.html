@@ -4,14 +4,51 @@
   <meta charset="UTF-8">
   <title>THE MACROPOD</title>
   <style>
-	body {
-	  margin: 0;
-	  font-family: Arial, Helvetica, sans-serif;
+	body,html {
+	  background: #007bff;
+	  height:100%;
 	}
+	h1 {
+	  height:auto;
+	  display:table;
+	  width: 80%;
+	  text-align:center;
+	  overflow: auto;
+	  margin: auto;
+	  position: static;
+	  top: 0;left: 0;bottom: 0;right: 0;
+	  color: white;
+	  font-family: 'Raleway', sans-serif;
+	  font-weight:300;
+	  font-size:3em;
+	}
+
+	h2 {
+	    position: fixed;
+	    text-align:center;
+	    top:10px;
+	    right:20px;
+	    color:white;
+	    font-size: 20px;
+	    font-family: Roboto;
+	    font-weight: normal;
+			z-index:999;
+	    span{
+	      font-size:15px;
+	      font-weight: lighter;
+	    }
+	    a{
+	      color:white;
+	      font-size:15px;
+	      padding: 0 30px
+
+	    }
+	  }
 
 	.topnav {
 	  overflow: hidden;
 	  background-color: #333;
+	  position: fixed;
 	}
 
 	.topnav a {
@@ -32,9 +69,21 @@
 	  background-color: #4CAF50;
 	  color: white;
 	}
+	.list {
+		position: fixed;
+		top: 10%;
+		left: 3%;
+	}
+	a {
+		text-align: center;
+		color: white;
+		font-size: 18px;
+	}
 	</style>
 </head>
 <body>
+	<script src="jquery.js"></script>
+	<script src="animation.js"></script>
 	<div class="topnav">
 		<a href="index.html">Home</a>
 		<a href="music.html">Music</a>
@@ -43,6 +92,7 @@
 		<a href="links.html">Links</a>
 	</div>
 
+  <div class="list">
   <h1>Guides on some stuff</h1>
   <a href="youtube-playlist-table.html">Make an HTML Table of links from a YT Playlist</a>
   <br>
@@ -53,6 +103,7 @@
   <a href="polybar.html">Configure Polybar</a>
   <br>
   <a href="eths2f.html">The S2F Model Applied to Ethereum</a>
+  </div>
   
 </body>
 </html>

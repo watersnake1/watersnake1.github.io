@@ -4,11 +4,46 @@
   <meta charset="UTF-8">
   <title>THE MACROPOD</title>
   <style>
-	body {
-	  margin: 0;
-	  font-family: Arial, Helvetica, sans-serif;
+	body,html {
+	  background: #007bff;
+	  height:100%;
+	}
+	h1 {
+	  height:auto;
+	  display:table;
+	  width: 80%;
+	  text-align:center;
+	  overflow: auto;
+	  margin: auto;
+	  position: static;
+	  top: 0;left: 0;bottom: 0;right: 0;
+	  color: white;
+	  font-family: 'Raleway', sans-serif;
+	  font-weight:300;
+	  font-size:3em;
 	}
 
+	h2 {
+	    position: fixed;
+	    text-align:center;
+	    top:10px;
+	    right:20px;
+	    color:white;
+	    font-size: 20px;
+	    font-family: Roboto;
+	    font-weight: normal;
+			z-index:999;
+	    span{
+	      font-size:15px;
+	      font-weight: lighter;
+	    }
+	    a{
+	      color:white;
+	      font-size:15px;
+	      padding: 0 30px
+
+	    }
+	  }
 	article {
 		width: 70%;
 		padding: 5px;
@@ -17,6 +52,7 @@
 	.topnav {
 	  overflow: hidden;
 	  background-color: #333;
+	  position: fixed;
 	}
 
 	.topnav a {
@@ -37,9 +73,16 @@
 	  background-color: #4CAF50;
 	  color: white;
 	}
+	a {
+		text-align: center;
+		color: white;
+		font-size: 18px;
+	}
 	</style>
 </head>
 <body>
+	<script src="jquery.js"></script>
+	<script src="animation.js"></script>
 	<div class="topnav">
 		<a href="index.html">Home</a>
 		<a href="music.html">Music</a>
