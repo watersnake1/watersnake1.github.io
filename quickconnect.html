@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>THE MACROPOD</title>
+  <style>
+	body {
+	  margin: 0;
+	  font-family: Arial, Helvetica, sans-serif;
+	}
+
+	article {
+		padding: 40px;
+		width: 70%;
+	}
+
+	code, pre{
+		padding: 1px;
+		background: #DCDCDC;
+
+	}
+
+	.topnav {
+	  overflow: hidden;
+	  background-color: #333;
+	}
+
+	.topnav a {
+	  float: left;
+	  color: #f2f2f2;
+	  text-align: center;
+	  padding: 14px 16px;
+	  text-decoration: none;
+	  font-size: 17px;
+	}
+
+	.topnav a:hover {
+	  background-color: #ddd;
+	  color: black;
+	}
+
+	.topnav a.active {
+	  background-color: #4CAF50;
+	  color: white;
+	}
+	</style>
+</head>
+<body>
+	<div class="topnav">
+		<a href="index.html">Home</a>
+		<a href="music.html">Music</a>
+		<a href="books.html">Books</a>
+		<a class="active" href="guides.html">Writing and Guides</a>
+		<a href="links.html">Links</a>
+	</div>
+	<article>
+	<h1>Generate a QuickConnect QR Code for your Bitcoin Node</h1>
+	<p><a href="https://github.com/BlockchainCommons/Bitcoin-Standup/blob/master/Docs/Quick-Connect-API.md">QuickConnect</a> is a protocol for creating QR codes for connecting BTC nodes to wallet frontends quickly. It is supported by FullyNoded, and can be easily used to point towards a bitcoin node running on Tor in order to make JSON-RPC calls from another device. Here we will generate a QR Code on-demand to make a new connection.</p>	
+	<h2>Dependencies</h2>
+	<p>The following dependencies will be required: <code>qrencode</code>, <code>imgcat</code> (if you want images to be displayed directly in the command line, which is convenient for ssh connections), and c build tools. You can get imgcat from <a href="https://github.com/eddieantonio/imgcat">here</a>.
+	</p>
+	<h2>Creating the qr code</h2>
+	<p>The easiest way to do this will be using bash. We will need to read out some information from two places: bitcoin.conf, the file that contains the user settings for bitcoind, and /var/lib/tor, where the information about the local tor hidden service is contained. You will probably need root permission to access these files.
+	<pre>
+	rpcuser=$(cat /home/$USER_LOCATION/.bitcoin/bitcoin.conf | grep "rpcuser")
+	l=${#rpcuser}
+	rpcuser=${rpcuser:8:$l}
+	rpcpass=$(cat /home/$USER_LOCATION/.bitcoin/bitcoin.conf | grep "rpcpass")
+	x=${#rpcpass}
+	rpcpass=${rpcpass:12:$x}
+	onion=$(cat /var/lib/tor/$HIDDEN_SERVICE/hostname)
+	</pre>
+	Here, we are printing the relevant files to the command line using <code>cat</code>, then grepping for the appropriate lines of information. Because there is extra information in the <code>rpcuser</code> and <code>rpcpass</code> lines of bitcoin.conf, we get the length of each of these lines then substring out the information that is not needed. With all this information stored, we can create the full URL: <code>URL="btcstandup://$rpcuser:$rpcpass@$onion:8332/?"</code>. Echoing the URL into <code>qrencode</code> gives a file containing the QR image: <code>echo "$URL" | qrencode -m 10 -o qrcode.png</code>. Then, all that is left is to display the image using your program of choice. imgcat is nice because it shows it directly in the command line, but one could also use feh, fim, shotwell, a browser, or any other means of displaying an image. Here is the complete bash script:
+	<pre>
+	#!/bin/bash
+	#Dependencies: imgcat, normal linux build tools for c code
+	#Create a QuickConnect Link for a Node
+	#Usage: ./qc.sh USERNAME HIDDEN_SERVICE_DIR (not the full path)
+
+	#Check if imgcat is installed
+	IMGCAT=/usr/local/bin/imgcat
+	if test -f "$IMGCAT"; then
+		echo "imgcat installed already"
+	else
+		echo "imgcat not installed; installing now"
+		git clone https://github.com/eddieantonio/imgcat.git
+		cd imgcat
+		autoconf
+		./configure
+		make && sudo make install
+	fi
+	#
+	USER_LOCATION=$1
+	HIDDEN_SERVICE=$2
+	rpcuser=$(cat /home/$USER_LOCATION/.bitcoin/bitcoin.conf | grep "rpcuser")
+	l=${#rpcuser}
+	rpcuser=${rpcuser:8:$l}
+	rpcpass=$(cat /home/$USER_LOCATION/.bitcoin/bitcoin.conf | grep "rpcpass")
+	x=${#rpcpass}
+	rpcpass=${rpcpass:12:$x}
+	onion=$(cat /var/lib/tor/$HIDDEN_SERVICE/hostname)
+	URL="btcstandup://$rpcuser:$rpcpass@$onion:8332/?"
+	echo "$URL" | qrencode -m 10 -o qrcode.png
+	imgcat --width=50 --height=25 qrcode.png
+	</pre>
+	</p>
+	<p>You can also find this code on my <a href="links.html">Github</a></p>
+
+	</article>				
+</body>
+</html>
